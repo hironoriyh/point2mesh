@@ -1,0 +1,29 @@
+version: "2"
+services:
+  app:
+    build: . 
+    #image: pynif3d:conda
+    image: point2mesh:latest
+    command: /bin/bash
+    deploy:
+      resources: 
+        reservations:
+          devices:
+            - driver: nvidia
+              # count: 1
+              capabilities: [gpu]
+              device_ids: ['0']
+
+    container_name: point2mesh
+    user: ${CURRENT_UID}
+    volumes:
+      - /home/hyoshida:/home/hyoshida
+      - /etc/passwd:/etc/passwd      
+      - /etc/group:/etc/group
+    ports:
+      - "6009:6009"
+     # - "8889:8889"
+    tty: true
+    working_dir: $HOME
+    #command: tail -f /dev/null
+    stdin_open: true
