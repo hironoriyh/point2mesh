@@ -71,8 +71,18 @@ class Mesh:
                     edges_count += 1
             for idx, edge in enumerate(faces_edges):
                 edge_key = edge2key[edge]
-                edge_nb[edge_key][nb_count[edge_key]] = edge2key[faces_edges[(idx + 1) % 3]]
-                edge_nb[edge_key][nb_count[edge_key] + 1] = edge2key[faces_edges[(idx + 2) % 3]]
+                try:
+                    edge_nb[edge_key][nb_count[edge_key]] = edge2key[faces_edges[(idx + 1) % 3]]
+                except:
+                    # import ipdb; ipdb.set_trace()
+                    print(len(edge_nb[edge_key]), nb_count[edge_key], idx,)
+                    edge_nb[edge_key][0] = edge2key[faces_edges[(idx + 1) % 3]]
+                try:
+                    edge_nb[edge_key][nb_count[edge_key] + 1] = edge2key[faces_edges[(idx + 2) % 3]]
+                except:
+                    print(len(edge_nb[edge_key]), nb_count[edge_key], idx,)
+                    edge_nb[edge_key][1] = edge2key[faces_edges[(idx + 1) % 3]]
+
                 nb_count[edge_key] += 2
             for idx, edge in enumerate(faces_edges):
                 edge_key = edge2key[edge]
